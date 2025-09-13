@@ -5,7 +5,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      #./programs/develop.nix
+      ./programs/develop.nix
       ./programs/media.nix
     ];
 
@@ -102,9 +102,11 @@
       kdePackages.kate
       protonvpn-gui
       discord
+      spotify
       git
       github-cli
       go-task
+      code-cursor
     ];
   };
   hardware.nvidia.open = true;
@@ -132,7 +134,6 @@
     vim
     wget
     kitty
-    spotify
   ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
