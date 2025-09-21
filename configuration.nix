@@ -107,6 +107,10 @@
       github-cli
       go-task
       code-cursor
+      appimage-run
+      podman
+      podman-compose
+      buildah
     ];
   };
   hardware.nvidia.open = true;
