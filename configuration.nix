@@ -93,11 +93,13 @@
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
+
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.adam = {
     isNormalUser = true;
     description = "Adam";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "podman" ];
     packages = with pkgs; [
       kdePackages.kate
       protonvpn-gui
@@ -113,6 +115,15 @@
       buildah
     ];
   };
+
+  virtualisation.podman = {
+    enable = true;
+    # Create a `docker` alias for podman, to use it as a drop-in replacement
+    dockerCompat = true;
+    # Required for containers under podman-compose or to have containers restart after reboot
+    defaultNetwork.settings.dns_enabled = true;
+  };
+
   hardware.nvidia.open = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.graphics.enable = true;
