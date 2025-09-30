@@ -1,16 +1,20 @@
-{ config, pkgs, inputs, lib, ... }:
-
 {
+  config,
+  pkgs,
+  inputs,
+  lib,
+  ...
+}: {
   programs.starship = {
-  enable = true;
-  settings = {
-    git_branch = {
-      format = "[$symbol$branch]($style) ";
-      style = "bright-green";
+    enable = true;
+    settings = {
+      git_branch = {
+        format = "[$symbol$branch]($style) ";
+        style = "bright-green";
+      };
     };
   };
-};
-environment.interactiveShellInit = ''
+  environment.interactiveShellInit = ''
     eval "$(${pkgs.starship}/bin/starship init bash)"
   '';
 
