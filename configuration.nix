@@ -1,13 +1,18 @@
-{ inputs, outputs, lib, config, pkgs, ... }:
-
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./programs/develop.nix
-      ./programs/media.nix
-    ];
+  inputs,
+  outputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}: {
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./programs/develop.nix
+    ./programs/media.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -17,8 +22,8 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   nix.gc = {
     automatic = true;
-    dates = "weekly"; # Runs garbage collection weekly
-    options = "--delete-older-than 7d"; # Deletes generations older than 30 days
+    dates = "*/3 * * * *";
+    options = "--delete-older-than 3d";
   };
   nix.extraOptions = ''
     download-buffer-size = 524288000
@@ -93,27 +98,25 @@
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
+  environment.etc."xdg/kdeglobals".text = ''
+    [Session]
+    restore=false
+  '';
 
-
+  environment.etc."xdg/autostart/kitty.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Kitty Terminal
+    Exec=/home/adam/.nix-profile/bin/kitty
+    Hidden=false
+    X-GNOME-Autostart-enabled=true
+    StartupNotify=false
+  '';
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.adam = {
     isNormalUser = true;
     description = "Adam";
-    extraGroups = [ "networkmanager" "wheel" "podman" ];
-    packages = with pkgs; [
-      kdePackages.kate
-      protonvpn-gui
-      discord
-      spotify
-      git
-      github-cli
-      go-task
-      code-cursor
-      appimage-run
-      podman
-      podman-compose
-      buildah
-    ];
+    extraGroups = ["networkmanager" "wheel" "podman"];
   };
 
   virtualisation.podman = {
@@ -125,13 +128,22 @@
   };
 
   hardware.nvidia.open = true;
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
   hardware.graphics.enable = true;
   hardware.nvidia.modesetting.enable = true;
-  
+
   services.libinput.enable = true;
   services.libinput.mouse.accelProfile = "flat";
-  
+
+  # Power management - hibernate after 45 minutes of inactivity
+  services.logind = {
+    lidSwitch = "hibernate";
+    extraConfig = ''
+      IdleAction=hibernate
+      IdleActionSec=45min
+    '';
+  };
+
   home-manager.users.adam = {
     home.stateVersion = "25.05";
   };
@@ -139,6 +151,10 @@
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "adam";
+
+  # Security configuration
+  security.sudo.wheelNeedsPassword = false;
+  security.pam.services.sddm.enableKwallet = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -148,7 +164,6 @@
   environment.systemPackages = with pkgs; [
     vim
     wget
-    kitty
   ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -176,5 +191,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
-
 }
