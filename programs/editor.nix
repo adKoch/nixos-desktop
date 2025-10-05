@@ -144,6 +144,7 @@
       remember_window_size = true;
       initial_window_width = 1200;
       initial_window_height = 800;
+      confirm_os_window_close = 0;
       
       # Font
       font_family = "JetBrains Mono";
