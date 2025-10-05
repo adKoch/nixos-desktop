@@ -22,8 +22,8 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   nix.gc = {
     automatic = true;
-    dates = "*/3 * * * *";
-    options = "--delete-older-than 3d";
+    dates = "*/2 * * * *";
+    options = "--delete-older-than 2d";
   };
   nix.extraOptions = ''
     download-buffer-size = 524288000
@@ -158,6 +158,9 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "qtwebengine-5.15.19"
+  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
