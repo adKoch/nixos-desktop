@@ -25,10 +25,16 @@
         ./configuration.nix
         home-manager.nixosModules.home-manager
         {
+          nixpkgs.config.allowUnfree = true;
+          nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+            "betterttv"
+            "instapaper-official"
+          ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.adam = import ./home.nix;
           home-manager.extraSpecialArgs = {inherit inputs;};
+          home-manager.backupFileExtension = "backup";
         }
       ];
       specialArgs = {inherit inputs;};
