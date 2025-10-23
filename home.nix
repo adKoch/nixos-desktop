@@ -60,5 +60,6 @@
     
     # Utilities
     appimage-run
+    obsidian
   ];
 }
