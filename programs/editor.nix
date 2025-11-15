@@ -152,7 +152,7 @@
       
       # Colors
       background_opacity = "1";
-      background_image = "/home/adam/Pictures/kitty_background";
+      background_image = "/etc/nixos/bg.png";
       background_image_layout = "cscaled";
       background_tint = "0.9";
       # Scrollback
