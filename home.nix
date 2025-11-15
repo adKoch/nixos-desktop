@@ -48,7 +48,6 @@
     # Development
     git
     github-cli
-    go-task
     code-cursor
     alejandra
     claude-code
