@@ -34,29 +34,34 @@
   };
 
 
+  programs.bash.shellAliases = {
+    agi = "antigravity . > /dev/null 2>&1 &";
+  };
+
   home.packages = with pkgs; [
     # KDE tools
     kdePackages.kate
-    
+
     # Communication & Media
     discord
     spotify
     stremio
     spicetify-cli
     protonvpn-gui
-    
+
     # Development
     git
     github-cli
     code-cursor
     alejandra
     claude-code
-    
+    forgejo
+
     # Containers
     podman
     podman-compose
     buildah
-    
+
     # Utilities
     appimage-run
     obsidian

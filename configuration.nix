@@ -18,7 +18,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "desktop"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   nix.gc = {
     automatic = true;
@@ -61,14 +61,14 @@
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
-  
+
   # Set wallpaper
   services.displayManager.sddm.settings = {
     Theme = {
       Current = "breeze";
     };
   };
-  
+
   # Configure wallpaper for KDE Plasma
   environment.etc."xdg/plasma-workspace/env/set_wallpaper.sh" = {
     text = ''
@@ -123,6 +123,8 @@
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
+
+
   environment.etc."xdg/kdeglobals".text = ''
     [Session]
     restore=false
@@ -159,15 +161,6 @@
 
   services.libinput.enable = true;
   services.libinput.mouse.accelProfile = "flat";
-
-  # Power management - hibernate after 45 minutes of inactivity
-  services.logind = {
-    lidSwitch = "hibernate";
-    extraConfig = ''
-      IdleAction=hibernate
-      IdleActionSec=45min
-    '';
-  };
 
   home-manager.users.adam = {
     home.stateVersion = "25.05";
