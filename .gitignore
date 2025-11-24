@@ -1,0 +1,3 @@
+*.secret
+*.credentials
+*.password
