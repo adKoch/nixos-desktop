@@ -15,6 +15,10 @@
       url = "github:jacopone/antigravity-nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    claude-desktop = {
+      url = "github:k3d3/claude-desktop-linux-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = {
@@ -24,6 +28,7 @@
     home-manager,
     firefox-addons,
     antigravity-nix,
+    claude-desktop,
   } @ inputs: {
     inherit (self) outputs;
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
@@ -33,15 +38,26 @@
         home-manager.nixosModules.home-manager
         {
           nixpkgs.config.allowUnfree = true;
+          nixpkgs.config.allowUnfreePredicate = pkg:
+            builtins.elem (nixpkgs.lib.getName pkg) [
+              "betterttv"
+            ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.adam = import ./home.nix;
-          home-manager.extraSpecialArgs = {inherit inputs;};
+          home-manager.extraSpecialArgs = {
+            inherit inputs;
+            firefox-addons-allowUnfree = (import nixpkgs-unstable {
+              system = "x86_64-linux";
+              config.allowUnfree = true;
+            }).callPackage firefox-addons { };
+          };
           home-manager.backupFileExtension = "backup";
         }
         {
           environment.systemPackages = [
             antigravity-nix.packages.x86_64-linux.default
+            claude-desktop.packages.x86_64-linux.claude-desktop
           ];
         }
       ];
