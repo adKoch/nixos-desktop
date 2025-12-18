@@ -4,6 +4,7 @@
   lib,
   config,
   pkgs,
+  firefox-addons-allowUnfree,
   ...
 }: {
   imports = [
@@ -14,7 +15,7 @@
     enable = true;
     profiles.default = {
       extensions = {
-        packages = with inputs.firefox-addons.packages.${pkgs.system}; [
+        packages = with firefox-addons-allowUnfree; [
           bitwarden
           ublock-origin
           return-youtube-dislikes
@@ -32,7 +33,6 @@
       };
     };
   };
-
 
   programs.bash.shellAliases = {
     agi = "antigravity . > /dev/null 2>&1 &";

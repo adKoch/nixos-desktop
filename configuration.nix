@@ -69,24 +69,6 @@
     };
   };
 
-  # Configure wallpaper for KDE Plasma
-  environment.etc."xdg/plasma-workspace/env/set_wallpaper.sh" = {
-    text = ''
-      #!/bin/bash
-      sleep 5
-      qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "
-        var allDesktops = desktops();
-        for (i=0;i<allDesktops.length;i++) {
-          d = allDesktops[i];
-          d.wallpaperPlugin = 'org.kde.image';
-          d.currentConfigGroup = Array('Wallpaper', 'org.kde.image', 'General');
-          d.writeConfig('Image', 'file:///etc/nixos/bg.png');
-        }
-      "
-    '';
-    mode = "0755";
-  };
-
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "pl";
@@ -123,7 +105,6 @@
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
-
 
   environment.etc."xdg/kdeglobals".text = ''
     [Session]
@@ -179,9 +160,10 @@
   nixpkgs.config.permittedInsecurePackages = [
     "qtwebengine-5.15.19"
   ];
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "betterttv"
-  ];
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "betterttv"
+    ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
