@@ -4,6 +4,7 @@
   lib,
   config,
   pkgs,
+  pkgs-unstable,
   firefox-addons-allowUnfree,
   ...
 }: {
@@ -34,11 +35,7 @@
     };
   };
 
-  programs.bash.shellAliases = {
-    agi = "antigravity . > /dev/null 2>&1 &";
-  };
-
-  home.packages = with pkgs; [
+  home.packages = (with pkgs; [
     # KDE tools
     kdePackages.kate
 
@@ -54,16 +51,25 @@
     github-cli
     code-cursor
     alejandra
-    claude-code
     forgejo
+
+    # 3D Printing
+    bambu-studio
 
     # Containers
     podman
     podman-compose
     buildah
 
+    # Office Suite
+    libreoffice
+
     # Utilities
     appimage-run
     obsidian
-  ];
+    anki
+  ]) ++ (with pkgs-unstable; [
+    claude-code
+    opencode
+  ]);
 }

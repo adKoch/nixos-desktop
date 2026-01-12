@@ -11,14 +11,6 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    antigravity-nix = {
-      url = "github:jacopone/antigravity-nix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    claude-desktop = {
-      url = "github:k3d3/claude-desktop-linux-flake";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
   };
 
   outputs = {
@@ -27,8 +19,6 @@
     nixpkgs-unstable,
     home-manager,
     firefox-addons,
-    antigravity-nix,
-    claude-desktop,
   } @ inputs: {
     inherit (self) outputs;
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
@@ -47,18 +37,16 @@
           home-manager.users.adam = import ./home.nix;
           home-manager.extraSpecialArgs = {
             inherit inputs;
+            pkgs-unstable = import nixpkgs-unstable {
+              system = "x86_64-linux";
+              config.allowUnfree = true;
+            };
             firefox-addons-allowUnfree = (import nixpkgs-unstable {
               system = "x86_64-linux";
               config.allowUnfree = true;
             }).callPackage firefox-addons { };
           };
           home-manager.backupFileExtension = "backup";
-        }
-        {
-          environment.systemPackages = [
-            antigravity-nix.packages.x86_64-linux.default
-            claude-desktop.packages.x86_64-linux.claude-desktop
-          ];
         }
       ];
       specialArgs = {inherit inputs;};
