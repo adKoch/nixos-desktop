@@ -1,5 +1,5 @@
 {
-  description = "My NixOS configuration";
+  description = "My NixOS WSL configuration";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
@@ -7,8 +7,8 @@
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    firefox-addons = {
-      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -18,20 +18,18 @@
     nixpkgs,
     nixpkgs-unstable,
     home-manager,
-    firefox-addons,
+    nixos-wsl,
   } @ inputs: {
     inherit (self) outputs;
-    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         ./configuration.nix
+        ./wsl.nix
+        nixos-wsl.nixosModules.wsl
         home-manager.nixosModules.home-manager
         {
           nixpkgs.config.allowUnfree = true;
-          nixpkgs.config.allowUnfreePredicate = pkg:
-            builtins.elem (nixpkgs.lib.getName pkg) [
-              "betterttv"
-            ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.adam = import ./home.nix;
@@ -41,10 +39,6 @@
               system = "x86_64-linux";
               config.allowUnfree = true;
             };
-            firefox-addons-allowUnfree = (import nixpkgs-unstable {
-              system = "x86_64-linux";
-              config.allowUnfree = true;
-            }).callPackage firefox-addons { };
           };
           home-manager.backupFileExtension = "backup";
         }

@@ -8,17 +8,10 @@
 }: {
   nix.settings.experimental-features = ["nix-command" "flakes"];
   imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
     ./programs/develop.nix
-    ./programs/media.nix
   ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "desktop"; # Define your hostname.
+  networking.hostName = "wsl"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   nix.gc = {
     automatic = true;
@@ -28,13 +21,6 @@
   nix.extraOptions = ''
     download-buffer-size = 524288000
   '';
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Warsaw";
@@ -54,77 +40,14 @@
     LC_TIME = "pl_PL.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
-
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
-
-  # Set wallpaper
-  services.displayManager.sddm.settings = {
-    Theme = {
-      Current = "breeze";
-    };
-  };
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "pl";
-    variant = "";
-  };
-
   # Configure console keymap
   console.keyMap = "pl2";
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-  };
-
-  environment.etc."xdg/kdeglobals".text = ''
-    [Session]
-    restore=false
-  '';
-
-  environment.etc."xdg/autostart/kitty.desktop".text = ''
-    [Desktop Entry]
-    Type=Application
-    Name=Kitty Terminal
-    Exec=/home/adam/.nix-profile/bin/kitty
-    Hidden=false
-    X-GNOME-Autostart-enabled=true
-    StartupNotify=false
-  '';
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.adam = {
     isNormalUser = true;
     description = "Adam";
-    extraGroups = ["networkmanager" "wheel" "podman"];
+    extraGroups = ["wheel" "podman"];
   };
 
   virtualisation.podman = {
@@ -135,41 +58,22 @@
     defaultNetwork.settings.dns_enabled = true;
   };
 
-  hardware.nvidia.open = true;
-  services.xserver.videoDrivers = ["nvidia"];
-  hardware.graphics.enable = true;
-  hardware.nvidia.modesetting.enable = true;
-
-  services.libinput.enable = true;
-  services.libinput.mouse.accelProfile = "flat";
-
   home-manager.users.adam = {
     home.stateVersion = "25.05";
   };
 
-  # Enable automatic login for the user.
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "adam";
-
   # Security configuration
   security.sudo.wheelNeedsPassword = false;
-  security.pam.services.sddm.enableKwallet = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [
-    "qtwebengine-5.15.19"
-  ];
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "betterttv"
-    ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim
     wget
+    curl
   ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
