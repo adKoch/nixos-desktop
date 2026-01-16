@@ -8,9 +8,6 @@
   wsl.enable = true;
   wsl.defaultUser = "adam";
 
-  # Use systemd as init system
-  wsl.nativeSystemd = true;
-
   # WSL-specific settings
   wsl.wslConf = {
     automount.root = "/mnt";
@@ -18,9 +15,6 @@
     network.generateHosts = true;
     network.generateResolvConf = true;
   };
-
-  # Enable integration with Windows
-  wsl.interop.enable = true;
 
   # Optional: Enable Docker Desktop integration
   # wsl.docker-desktop.enable = true;
