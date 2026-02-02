@@ -58,16 +58,9 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
-
-  # Set wallpaper
-  services.displayManager.sddm.settings = {
-    Theme = {
-      Current = "breeze";
-    };
-  };
+  # Enable the Cinnamon Desktop Environment.
+  services.xserver.desktopManager.cinnamon.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -105,11 +98,6 @@
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
-
-  environment.etc."xdg/kdeglobals".text = ''
-    [Session]
-    restore=false
-  '';
 
   environment.etc."xdg/autostart/kitty.desktop".text = ''
     [Desktop Entry]
@@ -153,7 +141,6 @@
 
   # Security configuration
   security.sudo.wheelNeedsPassword = false;
-  security.pam.services.sddm.enableKwallet = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
