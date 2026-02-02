@@ -36,8 +36,8 @@
   };
 
   home.packages = (with pkgs; [
-    # KDE tools
-    kdePackages.kate
+    # Text Editor
+    xed-editor
 
     # Communication & Media
     discord
@@ -52,17 +52,15 @@
     code-cursor
     alejandra
     forgejo
+    podman-desktop
+    podman-compose
 
     # 3D Printing
     bambu-studio
 
-    # Containers
-    podman
-    podman-compose
-    buildah
-
     # Office Suite
     libreoffice
+    gimp
 
     # Utilities
     appimage-run
