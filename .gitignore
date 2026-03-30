@@ -1,3 +1,4 @@
 *.secret
 *.credentials
 *.password
+.virtualcontext/

@@ -58,9 +58,14 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
-  # Enable the Cinnamon Desktop Environment.
-  services.xserver.desktopManager.cinnamon.enable = true;
+  # Enable the XFCE Desktop Environment.
+  services.xserver.desktopManager.xfce.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
+
+  # Set kitty as the default terminal for XFCE
+  environment.etc."xdg/xfce4/helpers.rc".text = ''
+    TerminalEmulator=kitty
+  '';
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -99,6 +104,9 @@
     localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
 
+  # Set kitty as default terminal
+  environment.variables.TERMINAL = "kitty";
+
   environment.etc."xdg/autostart/kitty.desktop".text = ''
     [Desktop Entry]
     Type=Application
@@ -108,6 +116,8 @@
     X-GNOME-Autostart-enabled=true
     StartupNotify=false
   '';
+
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.adam = {
     isNormalUser = true;
@@ -127,6 +137,18 @@
   services.xserver.videoDrivers = ["nvidia"];
   hardware.graphics.enable = true;
   hardware.nvidia.modesetting.enable = true;
+
+  services.ollama = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
+    enable = true;
+    acceleration = "cuda";
+    environmentVariables = {
+      OLLAMA_KEEP_ALIVE = "30m";
+    };
+  };
+
+  home-manager.extraSpecialArgs = {
+    hasNvidia = builtins.elem "nvidia" config.services.xserver.videoDrivers;
+  };
 
   services.libinput.enable = true;
   services.libinput.mouse.accelProfile = "flat";

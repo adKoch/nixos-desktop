@@ -208,6 +208,9 @@
       ];
 
       userSettings = {
+        # Disable keyring to avoid password prompts with autologin
+        #"password-store" = "basic";
+
         "editor.fontSize" = 14;
         "editor.fontFamily" = "JetBrains Mono";
         "editor.tabSize" = 2;

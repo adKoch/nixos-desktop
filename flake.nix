@@ -41,10 +41,11 @@
               system = "x86_64-linux";
               config.allowUnfree = true;
             };
-            firefox-addons-allowUnfree = (import nixpkgs-unstable {
+            firefox-addons-allowUnfree = (import nixpkgs {
               system = "x86_64-linux";
               config.allowUnfree = true;
-            }).callPackage firefox-addons { };
+              overlays = [ firefox-addons.overlays.default ];
+            }).firefox-addons;
           };
           home-manager.backupFileExtension = "backup";
         }
