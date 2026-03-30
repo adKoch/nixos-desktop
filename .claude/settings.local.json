@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(opencode --version)",
+      "Bash(claude-code --help)",
+      "Bash(find /nix/store -path *opencode* -type f -name package.json)",
+      "Bash(gh api:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(curl -s https://raw.githubusercontent.com/google-gemini/gemini-cli/main/README.md)",
+      "Bash(curl -s https://api.github.com/repos/google-gemini/gemini-cli/contents/)",
+      "Bash(python3 -c \"import sys,json; [print\\(f[''''name'''']\\) for f in json.load\\(sys.stdin\\) if isinstance\\(f, dict\\)]\")",
+      "Bash(curl -s https://raw.githubusercontent.com/google-gemini/gemini-cli/main/docs/configuration.md)",
+      "Bash(curl -s https://api.github.com/repos/google-gemini/gemini-cli/contents/docs)",
+      "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(f[''''name'''']\\) for f in data if isinstance\\(f, dict\\)]\")",
+      "Bash(curl -s https://api.github.com/repos/google-gemini/gemini-cli/git/trees/main?recursive=1)",
+      "Bash(curl -s https://raw.githubusercontent.com/google-gemini/gemini-cli/main/docs/cli/configuration.md)"
+    ]
+  }
+}
