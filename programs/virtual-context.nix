@@ -17,7 +17,7 @@
     };
     Service = {
       Type = "simple";
-      ExecStart = "%h/.local/bin/virtual-context" + (if hasNvidia then " --config /home/adam/nixos-desktop/virtual-context.yaml" else "") + " proxy --upstream https://api.anthropic.com";
+      ExecStart = "%h/.local/bin/virtual-context" + (if hasNvidia then " --config /home/adam/nixos-desktop/virtual-context.yaml" else "") + " proxy --upstream https://api.anthropic.com --port 5757";
       Restart = "on-failure";
       RestartSec = 5;
       Environment = [
