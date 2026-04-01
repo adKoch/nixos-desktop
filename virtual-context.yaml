@@ -7,7 +7,7 @@
 # referenced more often), and coding-specific keyword fallbacks.
 
 version: "0.2"
-storage_root: ".virtualcontext"
+storage_root: "/home/adam/.local/share/virtual-context"
 context_window: 120000
 token_counter: "estimate"
 
@@ -165,7 +165,7 @@ providers:
 storage:
   backend: "sqlite"
   sqlite:
-    path: ".virtualcontext/store.db"
+    path: "/home/adam/.local/share/virtual-context/store.db"
 
 facts:
   graph_links: true

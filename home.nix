@@ -93,29 +93,11 @@
     ignores = [ ".virtualcontext/" ];
   };
 
-  services.ssh-agent.enable = true;
   services.gpg-agent.enableSshSupport = false;
 
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
-  };
-
-  systemd.user.services.ssh-add-keys = {
-    Unit = {
-      Description = "Add SSH keys to agent";
-      After = [ "ssh-agent.service" ];
-      Requires = [ "ssh-agent.service" ];
-    };
-    Service = {
-      Type = "oneshot";
-      Environment = "SSH_AUTH_SOCK=%t/ssh-agent";
-      ExecStart = "${pkgs.openssh}/bin/ssh-add";
-      RemainAfterExit = true;
-    };
-    Install = {
-      WantedBy = [ "default.target" ];
-    };
   };
 
   # Disable XFCE panel

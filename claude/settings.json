@@ -11,5 +11,7 @@
     "commit": "",
     "pr": ""
   },
-  "voiceEnabled": true
+  "effortLevel": "high",
+  "voiceEnabled": true,
+  "model": "opus"
 }
