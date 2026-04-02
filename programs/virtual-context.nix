@@ -22,6 +22,8 @@
       RestartSec = 5;
       Environment = [
         "PATH=%h/.local/bin:/run/current-system/sw/bin"
+        # numpy/sentence-transformers (pipx) need libstdc++ which NixOS doesn't expose globally
+        "LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib"
       ];
     };
     Install = {

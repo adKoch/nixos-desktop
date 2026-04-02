@@ -11,6 +11,8 @@
   imports = [
     ./programs/editor.nix
     ./programs/claude-code.nix
+    ./programs/codex.nix
+    ./programs/gemini-cli.nix
     ./programs/virtual-context.nix
   ];
 
@@ -86,6 +88,8 @@
     sox
   ]) ++ (with pkgs-unstable; [
     claude-code
+    codex
+    gemini-cli
   ]);
 
   programs.git = {

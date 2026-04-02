@@ -133,10 +133,14 @@
     defaultNetwork.settings.dns_enabled = true;
   };
 
-  hardware.nvidia.open = true;
-  services.xserver.videoDrivers = ["nvidia"];
   hardware.graphics.enable = true;
-  hardware.nvidia.modesetting.enable = true;
+
+  # NVIDIA — enabled automatically when videoDrivers includes "nvidia".
+  # Set services.xserver.videoDrivers = ["nvidia"] in hardware-configuration.nix on machines with NVIDIA GPUs.
+  hardware.nvidia = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
+    open = true;
+    modesetting.enable = true;
+  };
 
   services.ollama = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
     enable = true;
