@@ -1,0 +1,5 @@
+# Codex CLI configuration
+# Reference: https://developers.openai.com/codex/config-reference
+
+[model]
+name = "o3"

@@ -20,7 +20,7 @@ paging:
 tag_generator:
   type: "llm"
   provider: "ollama"
-  model: "qwen3:4b"
+  model: "nomic-embed-text:v1.5"
   max_tags: 10
   min_tags: 5
   max_tokens: 8192
@@ -141,9 +141,9 @@ tag_rules:
 
 # Compaction — more aggressive than defaults for coding sessions
 compaction:
-  soft_threshold: 0.60          # default: 0.70 — compact earlier to keep window focused
-  hard_threshold: 0.80          # default: 0.85
-  protected_recent_turns: 8     # default: 6 — code context referenced more often
+  soft_threshold: 0.60 # default: 0.70 — compact earlier to keep window focused
+  hard_threshold: 0.80 # default: 0.85
+  protected_recent_turns: 8 # default: 6 — code context referenced more often
   overflow_buffer: 1.2
   summary_ratio: 0.15
   min_summary_tokens: 200
@@ -153,7 +153,7 @@ compaction:
 
 summarization:
   provider: "ollama"
-  model: "qwen3:4b"
+  model: "nomic-embed-text:v1.5"
   max_tokens: 1000
   temperature: 0.3
 

@@ -16,4 +16,4 @@ sudo nix-collect-garbage --delete-older-than 7d
 pipx upgrade virtual-context 2>/dev/null || pipx install virtual-context
 
 # Pull/upgrade Ollama models (only on machines with Ollama installed)
-command -v ollama >/dev/null 2>&1 && ollama pull qwen3:4b
+command -v ollama >/dev/null 2>&1 && ollama pull nomic-embed-text:v1.5
