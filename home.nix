@@ -11,6 +11,7 @@
   imports = [
     ./programs/editor.nix
     ./programs/codex.nix
+    ./programs/antigravity.nix
     ./programs/gemini-cli.nix
     ./programs/virtual-context.nix
   ];
@@ -86,6 +87,7 @@
     bitwarden-cli
     sox
   ]) ++ (with pkgs-unstable; [
+    antigravity
     codex
     gemini-cli
   ]);
