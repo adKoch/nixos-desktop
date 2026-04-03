@@ -38,7 +38,7 @@
       };
 
       settings = {
-        "browser.startup.homepage" = "https://adkoch.github.io/browser-startup-page/?config=office&lat=52.33&lon=20.94";
+        "browser.startup.homepage" = "https://adkoch.github.io/browser-startup-page/?config=office";
         "privacy.resistFingerprinting" = true;
         "extensions.autoDisableScopes" = 0;
         "extensions.enabledScopes" = 15;
