@@ -12,5 +12,3 @@ sudo bash -c 'NIXPKGS_ALLOW_UNFREE=1 ulimit -n 1048576;  nixos-rebuild switch --
 
 sudo nix-collect-garbage --delete-older-than 7d
 
-# Install/upgrade Python CLI tools via pipx
-pipx upgrade virtual-context 2>/dev/null || pipx install virtual-context
