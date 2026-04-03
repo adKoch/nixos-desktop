@@ -1,4 +1,4 @@
-{ pkgs, hasNvidia, ... }: {
+{ pkgs, ... }: {
   home.packages = with pkgs; [
     pipx
   ];
@@ -17,7 +17,7 @@
     };
     Service = {
       Type = "simple";
-      ExecStart = "%h/.local/bin/virtual-context" + (if hasNvidia then " --config /home/adam/nixos-desktop/virtual-context.yaml" else "") + " proxy --upstream https://api.anthropic.com --port 5757";
+      ExecStart = "%h/.local/bin/virtual-context proxy --upstream https://api.anthropic.com --port 5757";
       Restart = "on-failure";
       RestartSec = 5;
       Environment = [
