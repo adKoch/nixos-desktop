@@ -135,24 +135,7 @@
 
   hardware.graphics.enable = true;
 
-  # NVIDIA — enabled automatically when videoDrivers includes "nvidia".
-  # Set services.xserver.videoDrivers = ["nvidia"] in hardware-configuration.nix on machines with NVIDIA GPUs.
-  hardware.nvidia = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
-    open = true;
-    modesetting.enable = true;
-  };
-
-  services.ollama = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
-    enable = true;
-    acceleration = "cuda";
-    environmentVariables = {
-      OLLAMA_KEEP_ALIVE = "30m";
-    };
-  };
-
-  home-manager.extraSpecialArgs = {
-    hasNvidia = builtins.elem "nvidia" config.services.xserver.videoDrivers;
-  };
+  home-manager.extraSpecialArgs = {};
 
   services.libinput.enable = true;
   services.libinput.mouse.accelProfile = "flat";

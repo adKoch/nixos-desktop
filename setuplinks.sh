@@ -11,11 +11,3 @@ sudo ln -sf "$SCRIPT_DIR/programs" /etc/nixos/programs
 sudo ln -sf "$SCRIPT_DIR/bg.png" /etc/nixos/bg.png
 
 echo "Symlinks created successfully"
-
-# Create virtual-context global store directory
-mkdir -p "$HOME/.local/share/virtual-context"
-echo "Virtual-context store directory ready"
-
-# Fix virtual-context symlink to point to pipx-managed binary
-ln -sf "$HOME/.local/pipx/venvs/virtual-context/bin/virtual-context" "$HOME/.local/bin/virtual-context"
-echo "Virtual-context binary symlink updated"

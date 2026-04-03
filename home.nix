@@ -12,7 +12,6 @@
     ./programs/editor.nix
     ./programs/codex.nix
     ./programs/gemini-cli.nix
-    ./programs/virtual-context.nix
   ];
 
   # Enable bash in home-manager to auto-source session variables
