@@ -2,9 +2,9 @@
   description = "My NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     firefox-addons = {
@@ -31,6 +31,7 @@
           nixpkgs.config.allowUnfreePredicate = pkg:
             builtins.elem (nixpkgs.lib.getName pkg) [
               "betterttv"
+              "jules"
             ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;

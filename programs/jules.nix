@@ -9,6 +9,8 @@
         hash = "sha256-c869LI+Jubsk703MuM15Q8y2npmzfeJnwvV5Mjen0QM=";
       };
 
+      nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+
       sourceRoot = ".";
 
       installPhase = ''

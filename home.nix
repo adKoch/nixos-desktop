@@ -13,6 +13,7 @@
     ./programs/claude-code.nix
     ./programs/codex.nix
     ./programs/gemini-cli.nix
+    ./programs/jules.nix
     ./programs/virtual-context.nix
   ];
 
@@ -83,8 +84,6 @@
     appimage-run
     obsidian
     anki
-    bitwarden
-    bitwarden-cli
     sox
   ]) ++ (with pkgs-unstable; [
     claude-code
@@ -101,7 +100,10 @@
 
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
+    enableDefaultConfig = false;
+    matchBlocks."*" = {
+      addKeysToAgent = "yes";
+    };
   };
 
   # Disable XFCE panel
