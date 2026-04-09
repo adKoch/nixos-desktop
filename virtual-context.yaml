@@ -198,3 +198,12 @@ retrieval:
 telemetry:
   enabled: true
   models_file: "models.yaml"
+
+proxy:
+  instances:
+    - port: 5757
+      upstream: "https://api.anthropic.com"
+      label: "anthropic"
+    - port: 5760
+      upstream: "https://generativelanguage.googleapis.com"
+      label: "gemini"

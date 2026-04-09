@@ -5,12 +5,17 @@
     "enableAutoUpdate": false
   },
   "model": {
-    "name": "gemini-2.5-pro"
+    "name": "auto-gemini-3"
   },
   "skills": {
     "enabled": true
   },
   "experimental": {
     "plan": true
+  },
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
   }
 }
