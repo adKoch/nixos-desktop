@@ -18,5 +18,3 @@ services.xserver.videoDrivers = ["nvidia"];
 
 This automatically enables:
 - NVIDIA drivers (`hardware.nvidia`)
-- Ollama with CUDA acceleration
-- virtual-context proxy with embedding model config

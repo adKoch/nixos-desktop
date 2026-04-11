@@ -14,7 +14,6 @@
     ./programs/codex.nix
     ./programs/gemini-cli.nix
     ./programs/jules.nix
-    ./programs/virtual-context.nix
   ];
 
   # Enable bash in home-manager to auto-source session variables
@@ -81,6 +80,7 @@
     hubstaff
 
     # Utilities
+    blueman
     appimage-run
     obsidian
     anki
@@ -93,7 +93,6 @@
 
   programs.git = {
     enable = true;
-    ignores = [ ".virtualcontext/" ];
   };
 
   services.gpg-agent.enableSshSupport = false;

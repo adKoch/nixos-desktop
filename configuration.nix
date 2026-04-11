@@ -133,6 +133,15 @@
     defaultNetwork.settings.dns_enabled = true;
   };
 
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+
+  # Disable USB autosuspend for Realtek BT adapters (fixes RTL8761BU HCI_Reset timeout)
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="0bda", ATTR{power/autosuspend}="-1"
+  '';
+
   hardware.graphics.enable = true;
 
   # NVIDIA — enabled automatically when videoDrivers includes "nvidia".
@@ -142,17 +151,6 @@
     modesetting.enable = true;
   };
 
-  services.ollama = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
-    enable = true;
-    acceleration = "cuda";
-    environmentVariables = {
-      OLLAMA_KEEP_ALIVE = "30m";
-    };
-  };
-
-  home-manager.extraSpecialArgs = {
-    hasNvidia = builtins.elem "nvidia" config.services.xserver.videoDrivers;
-  };
 
   services.libinput.enable = true;
   services.libinput.mouse.accelProfile = "flat";
