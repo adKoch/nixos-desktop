@@ -10,8 +10,17 @@
   "skills": {
     "enabled": true
   },
+  "tools": {
+    "useRipgrep": true,
+    "shell": {
+      "enableShellOutputEfficiency": true
+    }
+  },
   "experimental": {
-    "plan": true
+    "plan": true,
+    "toolOutputMasking": {
+      "enabled": true
+    }
   },
   "security": {
     "auth": {
