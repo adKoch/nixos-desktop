@@ -144,7 +144,19 @@
 
   hardware.graphics.enable = true;
 
+  services.qdrant = {
+    enable = true;
+    settings = {
+      service = {
+        http_port = 6333;
+        grpc_port = 6334;
+        enable_static_content = true;
+      };
+    };
+  };
+
   # NVIDIA — enabled automatically when videoDrivers includes "nvidia".
+
   # Set services.xserver.videoDrivers = ["nvidia"] in hardware-configuration.nix on machines with NVIDIA GPUs.
   hardware.nvidia = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
     open = true;
@@ -200,6 +212,19 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  # Enable nix-ld
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    zlib
+    fuse3
+    icu
+    nss
+    openssl
+    curl
+    expat
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

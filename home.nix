@@ -14,6 +14,7 @@
     ./programs/codex.nix
     ./programs/gemini-cli.nix
     ./programs/jules.nix
+    ./programs/terminal.nix
   ];
 
   # Enable bash in home-manager to auto-source session variables
@@ -68,6 +69,8 @@
     forgejo
     podman-desktop
     podman-compose
+    gcc
+    gnumake
 
     # 3D Printing
     bambu-studio
@@ -89,6 +92,7 @@
     claude-code
     codex
     gemini-cli
+    uv
   ]);
 
   programs.git = {

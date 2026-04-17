@@ -10,6 +10,15 @@
   "skills": {
     "enabled": true
   },
+  "mcpServers": {
+    "qdrant-server": {
+      "command": "uvx",
+      "args": ["--python", "3.12", "mcp-server-qdrant"],
+      "env": {
+        "QDRANT_URL": "http://localhost:6333"
+      }
+    }
+  },
   "tools": {
     "useRipgrep": true,
     "shell": {
