@@ -157,10 +157,6 @@
 
   # NVIDIA — enabled automatically when videoDrivers includes "nvidia".
 
-  # Enable Gnome Keyring
-  services.gnome.gnome-keyring.enable = true;
-  security.pam.services.lightdm.enableGnomeKeyring = true;
-
   # Set services.xserver.videoDrivers = ["nvidia"] in hardware-configuration.nix on machines with NVIDIA GPUs.
   hardware.nvidia = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
     open = true;
