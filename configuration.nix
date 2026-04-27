@@ -122,7 +122,12 @@
   users.users.adam = {
     isNormalUser = true;
     description = "Adam";
-    extraGroups = ["networkmanager" "wheel" "podman"];
+    extraGroups = ["networkmanager" "wheel" "podman" "incus-admin"];
+  };
+
+  virtualisation.incus = {
+    enable = true;
+    ui.enable = true;
   };
 
   virtualisation.podman = {
@@ -132,6 +137,8 @@
     # Required for containers under podman-compose or to have containers restart after reboot
     defaultNetwork.settings.dns_enabled = true;
   };
+
+  networking.nftables.enable = true;
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
@@ -193,7 +200,19 @@
   environment.systemPackages = with pkgs; [
     vim
     wget
+    cudaPackages.cudatoolkit
+    sops
+    age
+    ssh-to-age
   ];
+
+  sops = {
+    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age.keyFile = "/home/adam/.config/sops/age/keys.txt";
+  };
+
+  hardware.nvidia-container-toolkit.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

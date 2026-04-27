@@ -2,7 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/schemas/settings.schema.json",
   "general": {
     "defaultApprovalMode": "default",
-    "enableAutoUpdate": false
+    "enableAutoUpdate": false,
+    "plan": {
+      "enabled": true
+    }
   },
   "model": {
     "name": "auto-gemini-3"
@@ -13,7 +16,11 @@
   "mcpServers": {
     "qdrant-server": {
       "command": "uvx",
-      "args": ["--python", "3.12", "mcp-server-qdrant"],
+      "args": [
+        "--python",
+        "3.12",
+        "mcp-server-qdrant"
+      ],
       "env": {
         "QDRANT_URL": "http://localhost:6333"
       }
@@ -26,7 +33,6 @@
     }
   },
   "experimental": {
-    "plan": true,
     "toolOutputMasking": {
       "enabled": true
     }
@@ -35,5 +41,8 @@
     "auth": {
       "selectedType": "oauth-personal"
     }
+  },
+  "agents": {
+    "overrides": {}
   }
 }

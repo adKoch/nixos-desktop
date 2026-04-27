@@ -11,6 +11,11 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -19,12 +24,14 @@
     nixpkgs-unstable,
     home-manager,
     firefox-addons,
+    sops-nix,
   } @ inputs: {
     inherit (self) outputs;
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         ./configuration.nix
+        sops-nix.nixosModules.sops
         home-manager.nixosModules.home-manager
         {
           nixpkgs.config.allowUnfree = true;
