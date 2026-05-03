@@ -89,6 +89,18 @@
     obsidian
     anki
     sox
+
+    (pkgs.writeShellScriptBin "start-audiobookshelf" ''
+      CONFIG_DIR="$HOME/.config/audiobookshelf"
+      mkdir -p "$CONFIG_DIR/config" "$CONFIG_DIR/metadata"
+      echo "Starting Audiobookshelf on http://localhost:8000..."
+      echo "Config: $CONFIG_DIR/config"
+      echo "Metadata: $CONFIG_DIR/metadata"
+      PORT=8000 \
+      CONFIG_PATH="$CONFIG_DIR/config" \
+      METADATA_PATH="$CONFIG_DIR/metadata" \
+      ${pkgs.audiobookshelf}/bin/audiobookshelf
+    '')
   ]) ++ (with pkgs-unstable; [
     claude-code
     codex
