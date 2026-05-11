@@ -31,14 +31,6 @@
     enableBashIntegration = true;
   };
 
-  programs.bash = {
-    initExtra = ''
-      if [[ $- == *i* ]]; then
-        fastfetch
-      fi
-    '';
-  };
-
   home.shellAliases = {
     cat = "bat";
     ls = "eza";
