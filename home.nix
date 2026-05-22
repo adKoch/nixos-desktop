@@ -14,6 +14,8 @@
     ./programs/codex.nix
     ./programs/gemini-cli.nix
     ./programs/jules.nix
+    ./programs/lmstudio.nix
+    ./programs/opencode.nix
     ./programs/terminal.nix
   ];
 
@@ -106,6 +108,8 @@
     codex
     gemini-cli
     uv
+    nixd
+    nil
   ]);
 
   programs.git = {

@@ -1,0 +1,16 @@
+[
+  {
+    "bindings": {
+      "ctrl-alt-g": [
+        "agent::NewExternalAgentThread",
+        {
+          "agent": {
+            "Custom": {
+              "name": "gemini"
+            }
+          }
+        }
+      ]
+    }
+  }
+]

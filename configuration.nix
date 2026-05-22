@@ -193,6 +193,7 @@
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "betterttv"
+      "lmstudio"
     ];
 
   # List packages installed in system profile. To search, run:

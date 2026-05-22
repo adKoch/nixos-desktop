@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  pkgs-unstable,
   inputs,
   lib,
   ...
@@ -245,4 +246,12 @@
       };
     };
   };
+
+  programs.zed-editor = {
+    enable = true;
+    package = pkgs-unstable.zed-editor;
+    # Note: Configuration is managed via out-of-store symlink to allow mutability
+  };
+
+  home.file.".config/zed".source = config.lib.file.mkOutOfStoreSymlink "/home/adam/nixos-desktop/zed";
 }

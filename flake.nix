@@ -39,6 +39,8 @@
             builtins.elem (nixpkgs.lib.getName pkg) [
               "betterttv"
               "jules"
+              "lmstudio"
+              "opencode"
             ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
