@@ -1,0 +1,58 @@
+active_model = "coding"
+vim_keybindings = false
+theme = "ansi-dark"
+autocopy_to_clipboard = true
+include_commit_signature = true
+include_model_info = true
+include_project_context = true
+include_prompt_detail = true
+
+[[providers]]
+name = "mistral"
+api_base = "https://api.mistral.ai/v1"
+api_key_env_var = "MISTRAL_API_KEY"
+api_style = "openai"
+backend = "mistral"
+
+[[models]]
+name = "mistral-large-latest"
+provider = "mistral"
+alias = "large"
+temperature = 1.0
+supports_images = true
+thinking = "high"
+
+[[models]]
+name = "mistral-medium-latest"
+provider = "mistral"
+alias = "medium"
+temperature = 1.0
+supports_images = true
+
+[[models]]
+name = "mistral-small-latest"
+provider = "mistral"
+alias = "small"
+temperature = 1.0
+supports_images = true
+
+[[models]]
+name = "magistral-latest"
+provider = "mistral"
+alias = "reasoning"
+temperature = 1.0
+thinking = "max"
+
+[[models]]
+name = "devstral-latest"
+provider = "mistral"
+alias = "coding"
+temperature = 0.2
+thinking = "off"
+
+[[models]]
+name = "codestral-latest"
+provider = "mistral"
+alias = "codestral"
+temperature = 0.0
+thinking = "off"

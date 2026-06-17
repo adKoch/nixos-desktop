@@ -18,4 +18,8 @@
   #  localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   #};
   programs.firefox.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    vlc
+  ];
 }

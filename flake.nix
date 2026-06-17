@@ -60,7 +60,20 @@
           home-manager.backupFileExtension = "backup";
         }
       ];
-      specialArgs = {inherit inputs;};
+      specialArgs = {
+        inherit inputs;
+        pkgs-unstable = import nixpkgs-unstable {
+          system = "x86_64-linux";
+          config.allowUnfree = true;
+          overlays = [
+            (final: prev: {
+              mistral-vibe = prev.mistral-vibe.overridePythonAttrs (old: {
+                doCheck = false;
+              });
+            })
+          ];
+        };
+      };
     };
   };
 }

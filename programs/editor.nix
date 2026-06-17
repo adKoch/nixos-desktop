@@ -179,11 +179,12 @@
 
   programs.vscode = {
     enable = true;
+    package = pkgs-unstable.vscodium;
     profiles.default = {
-      extensions = with pkgs.vscode-extensions; [
+      extensions = with pkgs-unstable.vscode-extensions; [
         # Language support
         ms-vscode.cpptools
-        ms-python.python
+        pkgs.vscode-extensions.ms-python.python
         bradlc.vscode-tailwindcss
         rust-lang.rust-analyzer
         ms-vscode.cmake-tools

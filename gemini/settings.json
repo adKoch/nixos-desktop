@@ -8,7 +8,7 @@
     }
   },
   "model": {
-    "name": "auto-gemini-3"
+    "name": "gemini-3.1-pro-preview"
   },
   "skills": {
     "enabled": true

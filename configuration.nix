@@ -4,6 +4,7 @@
   lib,
   config,
   pkgs,
+  pkgs-unstable,
   ...
 }: {
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -127,6 +128,7 @@
 
   virtualisation.incus = {
     enable = true;
+    package = pkgs.incus;
     ui.enable = true;
   };
 
@@ -170,7 +172,6 @@
     modesetting.enable = true;
   };
 
-
   services.libinput.enable = true;
   services.libinput.mouse.accelProfile = "flat";
 
@@ -205,13 +206,24 @@
     sops
     age
     ssh-to-age
+    pkgs-unstable.mistral-vibe
   ];
 
   sops = {
     defaultSopsFile = ./secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     age.keyFile = "/home/adam/.config/sops/age/keys.txt";
+    secrets."MISTRAL_API_KEY" = {
+      owner = config.users.users.adam.name;
+      group = config.users.users.adam.group;
+    };
   };
+
+  environment.extraInit = ''
+    if [ -f "''${config.sops.secrets."MISTRAL_API_KEY".path}" ]; then
+      export MISTRAL_API_KEY="$(cat "''${config.sops.secrets."MISTRAL_API_KEY".path}")"
+    fi
+  '';
 
   hardware.nvidia-container-toolkit.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
@@ -244,6 +256,35 @@
     openssl
     curl
     expat
+
+    # Electron / Chromium dependencies
+    nspr
+    atk
+    at-spi2-atk
+    libdrm
+    mesa
+    libxkbcommon
+    libglvnd
+    glib
+    gtk3
+    pango
+    cairo
+    alsa-lib
+    dbus
+    at-spi2-core
+    xorg.libX11
+    xorg.libXcomposite
+    xorg.libXdamage
+    xorg.libXext
+    xorg.libXfixes
+    xorg.libXrandr
+    xorg.libXcursor
+    xorg.libXi
+    xorg.libXrender
+    xorg.libXtst
+    xorg.libXScrnSaver
+    xorg.libxcb
+    systemd
   ];
 
   # This value determines the NixOS release from which the default

@@ -1,5 +1,21 @@
 # Codex CLI configuration
 # Reference: https://developers.openai.com/codex/config-reference
 
-[model]
-name = "o3"
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+approvals_reviewer = "user"
+
+[projects."/home/adam/projects/terminal-editor"]
+trust_level = "trusted"
+
+[projects."/home/adam/projects/odysseus"]
+trust_level = "trusted"
+
+[projects."/home/adam/nixos-desktop"]
+trust_level = "trusted"
+
+[projects."/home/adam"]
+trust_level = "trusted"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4

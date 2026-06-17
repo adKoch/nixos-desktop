@@ -12,3 +12,5 @@ sudo bash -c 'NIXPKGS_ALLOW_UNFREE=1 ulimit -n 1048576;  nixos-rebuild switch --
 
 sudo nix-collect-garbage --delete-older-than 7d
 
+
+

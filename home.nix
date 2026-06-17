@@ -15,6 +15,7 @@
     ./programs/gemini-cli.nix
     ./programs/jules.nix
     ./programs/lmstudio.nix
+    ./programs/mistral-vibe.nix
     ./programs/opencode.nix
     ./programs/terminal.nix
   ];
@@ -22,9 +23,21 @@
   # Enable bash in home-manager to auto-source session variables
   programs.bash.enable = true;
 
+  home.sessionPath = [
+    "$HOME/.local/bin"
+  ];
+
   home.shellAliases = {
     nd = "nix develop";
     sops-encrypt = "sops -e -i";
+
+    # Manually added aliases to bypass PATH caching issues
+    agy = "~/.local/bin/agy";
+
+    # Antigravity 2.0 (Architect Mode) - Manually installed from official archive
+    # Binary: ~/opt/Antigravity-x64/antigravity
+    # NOTE: Migrate to pkgs.antigravity-fhs once 2.0 lands in nixpkgs
+    antigravity = "~/opt/Antigravity-x64/antigravity";
   };
 
   programs.firefox = {
@@ -43,7 +56,8 @@
 
       settings = {
         "browser.startup.homepage" = "https://adkoch.github.io/browser-startup-page/?config=office";
-        "privacy.resistFingerprinting" = true;
+        # RFP randomizes canvas extraction, which corrupts copied canvas images.
+        "privacy.resistFingerprinting" = false;
         "extensions.autoDisableScopes" = 0;
         "extensions.enabledScopes" = 15;
       };
@@ -63,6 +77,11 @@
     stremio
     spicetify-cli
     protonvpn-gui
+
+    # MANUAL INSTALLS TO BE MIGRATED:
+    # 1. agy (CLI): Installed via curl script to ~/.local/bin/agy
+    # 2. Antigravity 2.0 (IDE): Extracted to ~/opt/Antigravity-x64/
+    # TODO: Migrate both to official nixpkgs when available.
 
     # Development
     git
