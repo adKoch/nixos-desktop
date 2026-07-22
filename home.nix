@@ -81,8 +81,19 @@
     gcc
     gnumake
 
-    # Gaming
-    path-of-building
+    # Gaming — Path of Building (PoB 1/2 build planner).
+    # Wrapped to force the NVIDIA GPU adapter: wgpu otherwise selects a mesa
+    # software Vulkan device and renders a black screen (single-GPU NVIDIA box).
+    # Uses the unstable 0.2.18 runtime so the bundled PoB data can self-update.
+    (symlinkJoin {
+      name = "rusty-path-of-building-wrapped";
+      paths = [ pkgs-unstable.rusty-path-of-building ];
+      nativeBuildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/rusty-path-of-building \
+          --set-default WGPU_ADAPTER_NAME NVIDIA
+      '';
+    })
 
     # 3D Printing
     bambu-studio
