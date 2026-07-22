@@ -6,8 +6,25 @@
   pkgs,
   pkgs-unstable,
   ...
-}: {
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+}:
+let
+  # Official NixOS CUDA binary cache — avoids building CUDA packages from source.
+  # Source: https://github.com/nixos-cuda/infra / https://wiki.nixos.org/wiki/CUDA
+  cudaCacheUrl = "https://cache.nixos-cuda.org";
+  cudaCacheKey = "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=";
+
+  # nix-community binary cache — provides prebuilt packages (e.g. electron)
+  # that are not yet on cache.nixos.org for recent nixpkgs revisions.
+  # Source: https://nix-community.org/cache/
+  nixCommunityCacheUrl = "https://nix-community.cachix.org";
+  nixCommunityCacheKey = "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
+in
+{
+  nix.settings = {
+    experimental-features = ["nix-command" "flakes"];
+    substituters = [cudaCacheUrl nixCommunityCacheUrl];
+    trusted-public-keys = [cudaCacheKey nixCommunityCacheKey];
+  };
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -23,8 +40,8 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   nix.gc = {
     automatic = true;
-    dates = "*/2 * * * *";
-    options = "--delete-older-than 2d";
+    dates = "weekly";
+    options = "--delete-older-than 7d";
   };
   nix.extraOptions = ''
     download-buffer-size = 524288000

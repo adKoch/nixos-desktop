@@ -30,14 +30,6 @@
   home.shellAliases = {
     nd = "nix develop";
     sops-encrypt = "sops -e -i";
-
-    # Manually added aliases to bypass PATH caching issues
-    agy = "~/.local/bin/agy";
-
-    # Antigravity 2.0 (Architect Mode) - Manually installed from official archive
-    # Binary: ~/opt/Antigravity-x64/antigravity
-    # NOTE: Migrate to pkgs.antigravity-fhs once 2.0 lands in nixpkgs
-    antigravity = "~/opt/Antigravity-x64/antigravity";
   };
 
   programs.firefox = {
@@ -78,11 +70,6 @@
     spicetify-cli
     protonvpn-gui
 
-    # MANUAL INSTALLS TO BE MIGRATED:
-    # 1. agy (CLI): Installed via curl script to ~/.local/bin/agy
-    # 2. Antigravity 2.0 (IDE): Extracted to ~/opt/Antigravity-x64/
-    # TODO: Migrate both to official nixpkgs when available.
-
     # Development
     git
     github-cli
@@ -93,6 +80,9 @@
     podman-compose
     gcc
     gnumake
+
+    # Gaming
+    path-of-building
 
     # 3D Printing
     bambu-studio
@@ -107,7 +97,6 @@
     # Utilities
     blueman
     appimage-run
-    obsidian
     anki
     sox
 
@@ -123,6 +112,7 @@
       ${pkgs.audiobookshelf}/bin/audiobookshelf
     '')
   ]) ++ (with pkgs-unstable; [
+    antigravity-cli
     claude-code
     codex
     gemini-cli
