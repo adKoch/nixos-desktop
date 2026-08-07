@@ -9,6 +9,8 @@
     "commit": "",
     "pr": ""
   },
-  "effortLevel": "high",
+  "model": "sonnet[1m]",
+  "effortLevel": "medium",
+  "tui": "fullscreen",
   "voiceEnabled": true
 }

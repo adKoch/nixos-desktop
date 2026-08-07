@@ -1,6 +1,5 @@
 {
   pkgs,
-  config,
   ...
 }: {
   home.packages = [
@@ -34,7 +33,4 @@
     })
   ];
 
-  home.file.".config/opencode/opencode.json".source =
-    config.lib.file.mkOutOfStoreSymlink
-    "/home/adam/nixos-desktop/opencode/opencode.json";
 }

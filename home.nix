@@ -16,7 +16,9 @@
     ./programs/jules.nix
     ./programs/lmstudio.nix
     ./programs/mistral-vibe.nix
+    ./programs/goose.nix
     ./programs/opencode.nix
+    ./programs/tinfoil.nix
     ./programs/terminal.nix
   ];
 

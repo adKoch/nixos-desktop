@@ -223,6 +223,7 @@ in
     sops
     age
     ssh-to-age
+    tinfoil-cli
     pkgs-unstable.mistral-vibe
   ];
 
@@ -234,11 +235,18 @@ in
       owner = config.users.users.adam.name;
       group = config.users.users.adam.group;
     };
+    secrets."TINFOIL_API_KEY" = {
+      owner = config.users.users.adam.name;
+      group = config.users.users.adam.group;
+    };
   };
 
   environment.extraInit = ''
     if [ -f "''${config.sops.secrets."MISTRAL_API_KEY".path}" ]; then
       export MISTRAL_API_KEY="$(cat "''${config.sops.secrets."MISTRAL_API_KEY".path}")"
+    fi
+    if [ -f "''${config.sops.secrets."TINFOIL_API_KEY".path}" ]; then
+      export TINFOIL_API_KEY="$(cat "''${config.sops.secrets."TINFOIL_API_KEY".path}")"
     fi
   '';
 

@@ -1,0 +1,19 @@
+# versions.txt
+#
+# Tracks packages fetched from outside the official NixOS package repository.
+# Packages installed via nixpkgs (stable or unstable channel) are versioned
+# through flake.lock and do not appear here.
+#
+# IMPORTANT: When introducing changes that require a rebuild, check this file
+# and consider bumping versions to their latest releases before doing so.
+# Each entry includes the source URL so you know where to look for updates.
+
+# OpenCode — model-agnostic AI coding assistant
+# Source: https://registry.npmjs.org/opencode-linux-x64
+# Used in: programs/opencode.nix
+opencode = 1.14.48
+
+# Jules — asynchronous coding agent from Google
+# Source: https://storage.googleapis.com/jules-cli
+# Used in: programs/jules.nix
+jules = 0.1.42
