@@ -9,7 +9,7 @@
     "commit": "",
     "pr": ""
   },
-  "model": "sonnet[1m]",
+  "model": "opus",
   "effortLevel": "medium",
   "tui": "fullscreen",
   "voiceEnabled": true
