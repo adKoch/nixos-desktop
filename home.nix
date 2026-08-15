@@ -68,7 +68,6 @@
     # Communication & Media
     discord
     spotify
-    stremio
     spicetify-cli
     protonvpn-gui
 
