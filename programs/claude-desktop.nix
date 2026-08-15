@@ -1,73 +1,109 @@
-{ inputs, pkgs, ... }: let
-  upstream = inputs.claude-desktop.packages.${pkgs.stdenv.hostPlatform.system};
-
-  # Claude Desktop 0.14.10 wants a native AuthRequest API for the in-app
-  # ASWebAuth login. patchy-cnb (upstream's Rust stand-in for the proprietary
-  # claude-native bindings) only exports KeyboardKey, so the guard
+{ pkgs, lib, ... }: let
+  # Anthropic's official Linux build (beta), from their apt repository. This
+  # replaces k3d3/claude-desktop-linux-flake, which repackaged the Windows
+  # installer: that source is frozen at 0.14.10 and too old for Cowork and the
+  # Claude Code session switch.
   #
-  #     if (a && a.AuthRequest.isAvailable() && t && fae(i)) { native } else { browser }
-  #
-  # throws on the undefined AuthRequest -- the module loads, so `a` is truthy,
-  # and neither branch ever runs. Login hangs. Upstream is pinned at its HEAD
-  # (b2b040c) and has no fix.
-  #
-  # Force the guard false so the else branch runs and auth happens in the
-  # system browser, which comes back via the registered claude:// handler.
-  # The replacement is padded to the exact byte length of the original: the
-  # asar header stores file offsets, so changing the size would corrupt it.
-  claude-desktop = upstream.claude-desktop.overrideAttrs (old: {
-    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.perl ];
+  # Updating: look up the newest version in the repository index at
+  #   https://downloads.claude.ai/claude-desktop/apt/stable/dists/stable/main/binary-amd64/Packages
+  # then bump version + hash here and in versions.txt. The app cannot update
+  # itself on Linux, and we deliberately don't register the apt repo.
+  claude-desktop = pkgs.stdenv.mkDerivation rec {
+    pname = "claude-desktop";
+    version = "1.30096.1";
 
-    postInstall = (old.postInstall or "") + ''
-      asar="$out/lib/claude-desktop/app.asar"
-      before=$(stat -c%s "$asar")
+    src = pkgs.fetchurl {
+      url = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop/claude-desktop_${version}_amd64.deb";
+      # Matches the SHA256 published in the repository's Packages index.
+      hash = "sha256-CeQaIKW0fqDlvCJtT/+nevQ61FDHy/XmblbW5P1K0uk=";
+    };
 
-      hits=$(grep -aoc 'a\.AuthRequest\.isAvailable()' "$asar" || true)
-      if [ "$hits" != "1" ]; then
-        echo "expected exactly 1 AuthRequest guard, found $hits -- upstream app changed" >&2
-        exit 1
-      fi
+    nativeBuildInputs = [
+      pkgs.dpkg
+      pkgs.autoPatchelfHook
+      pkgs.makeWrapper
+    ];
 
-      perl -0777 -pi -e \
-        's/\Qa.AuthRequest.isAvailable()\E/"!1" . " " x 25/e' "$asar"
+    # Mirrors the .deb's Depends, plus the usual Electron/Chromium set.
+    buildInputs = with pkgs; [
+      alsa-lib
+      at-spi2-atk
+      at-spi2-core
+      atk
+      cairo
+      cups
+      dbus
+      expat
+      glib
+      gtk3
+      libcap_ng # virtiofsd, the Cowork VM helper's filesystem daemon
+      libdrm
+      libGL
+      libnotify
+      libseccomp # virtiofsd
+      libsecret
+      libuuid
+      libxkbcommon
+      mesa
+      nspr
+      nss
+      pango
+      systemd
+      xorg.libX11
+      xorg.libXcomposite
+      xorg.libXdamage
+      xorg.libXext
+      xorg.libXfixes
+      xorg.libXrandr
+      xorg.libXtst
+      xorg.libxcb
+    ];
 
-      after=$(stat -c%s "$asar")
-      if [ "$before" != "$after" ]; then
-        echo "asar size changed ($before -> $after); offsets would be corrupt" >&2
-        exit 1
-      fi
+    unpackPhase = "dpkg-deb --fsys-tarfile $src | tar -x --no-same-permissions --no-same-owner";
+
+    installPhase = ''
+      runHook preInstall
+
+      mkdir -p $out/bin $out/lib
+      cp -r usr/lib/claude-desktop $out/lib/claude-desktop
+
+      # The SUID sandbox helper can't be setuid in the nix store, so it would
+      # abort at startup; drop it and disable the sandbox in the wrapper.
+      rm -f $out/lib/claude-desktop/chrome-sandbox
+
+      # Bundled libffmpeg.so must be findable at runtime, and Chromium/ANGLE
+      # dlopen()s libGL.so.1 by bare soname -- that ignores rpath, so the GL
+      # libraries have to be on LD_LIBRARY_PATH explicitly.
+      #
+      # --password-store=basic: nothing here provides a secret service (XFCE
+      # starts none, and autologin would leave a gnome-keyring locked because
+      # PAM never sees a password), so Chromium's default libsecret backend
+      # has nothing to talk to. Tokens land obfuscated in the app's config dir.
+      makeWrapper $out/lib/claude-desktop/claude-desktop $out/bin/claude-desktop \
+        --add-flags "--no-sandbox" \
+        --add-flags "--password-store=basic" \
+        --prefix LD_LIBRARY_PATH : "$out/lib/claude-desktop:${lib.makeLibraryPath [ pkgs.libGL pkgs.mesa ]}"
+
+      install -Dm644 usr/share/applications/com.anthropic.Claude.desktop \
+        $out/share/applications/com.anthropic.Claude.desktop
+
+      for icon in usr/share/icons/hicolor/*/apps/claude-desktop.png; do
+        size=$(basename $(dirname $(dirname "$icon")))
+        install -Dm644 "$icon" \
+          $out/share/icons/hicolor/$size/apps/claude-desktop.png
+      done
+
+      runHook postInstall
     '';
-  });
 
-  # Mirrors upstream's claude-desktop-with-fhs, rebuilt here so it wraps the
-  # patched package. FHS so MCP servers that shell out to node/npx work.
-  #
-  # --password-store=basic: nothing on this box provides a secret service
-  # (XFCE starts none, and autologin would leave a gnome-keyring locked since
-  # PAM never sees a password), so Chromium's default libsecret backend has
-  # nothing to talk to. Tokens land obfuscated in the app's config dir.
-  claude-desktop-with-fhs = pkgs.buildFHSEnv {
-    name = "claude-desktop";
-    # Upstream lists docker here, but it's dropped: this host runs podman with
-    # dockerCompat, so `docker` is already a podman shim, and nixpkgs'
-    # docker-28.5.2 is marked insecure in our pinned nixpkgs. Add it back (with
-    # permittedInsecurePackages) only if a docker-based MCP server needs it.
-    targetPkgs = pkgs:
-      with pkgs; [
-        glibc
-        openssl
-        nodejs
-        uv
-      ];
-    runScript = "${claude-desktop}/bin/claude-desktop --password-store=basic";
-    extraInstallCommands = ''
-      mkdir -p $out/share/applications
-      cp ${claude-desktop}/share/applications/claude.desktop $out/share/applications/
-
-      mkdir -p $out/share/icons
-      cp -r ${claude-desktop}/share/icons/* $out/share/icons/
-    '';
+    meta = with lib; {
+      description = "Claude desktop application (official Linux beta)";
+      homepage = "https://claude.com/download";
+      license = licenses.unfree;
+      platforms = [ "x86_64-linux" ];
+      mainProgram = "claude-desktop";
+    };
   };
 in {
-  home.packages = [ claude-desktop-with-fhs ];
+  home.packages = [ claude-desktop ];
 }

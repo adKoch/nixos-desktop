@@ -16,10 +16,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Repackages the official Windows build; no Linux build is published upstream.
-    # Deliberately not following our nixpkgs -- upstream pins a tested electron.
-    claude-desktop.url = "github:k3d3/claude-desktop-linux-flake";
   };
 
   outputs = {
@@ -29,7 +25,6 @@
     home-manager,
     firefox-addons,
     sops-nix,
-    claude-desktop,
   } @ inputs: {
     inherit (self) outputs;
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {

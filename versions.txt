@@ -13,6 +13,11 @@
 # Used in: programs/opencode.nix
 opencode = 1.14.48
 
+# Claude Desktop — official Linux beta, from Anthropic's apt repository
+# Source: https://downloads.claude.ai/claude-desktop/apt/stable/dists/stable/main/binary-amd64/Packages
+# Used in: programs/claude-desktop.nix
+claude-desktop = 1.30096.1
+
 # Goose Desktop — Electron desktop app for the Goose AI agent
 # Source: https://github.com/aaif-goose/goose/releases
 # Used in: programs/goose.nix
