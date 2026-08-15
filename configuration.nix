@@ -219,6 +219,7 @@ in
   environment.systemPackages = with pkgs; [
     vim
     wget
+    jq
     cudaPackages.cudatoolkit
     sops
     age

@@ -13,6 +13,11 @@
 # Used in: programs/opencode.nix
 opencode = 1.14.48
 
+# Goose Desktop — Electron desktop app for the Goose AI agent
+# Source: https://github.com/aaif-goose/goose/releases
+# Used in: programs/goose.nix
+goose-desktop = 1.45.0
+
 # Jules — asynchronous coding agent from Google
 # Source: https://storage.googleapis.com/jules-cli
 # Used in: programs/jules.nix
