@@ -18,6 +18,9 @@ let
   # Source: https://nix-community.org/cache/
   nixCommunityCacheUrl = "https://nix-community.cachix.org";
   nixCommunityCacheKey = "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
+
+  # Whether this host has an NVIDIA GPU, per its hardware-configuration.nix.
+  hasNvidia = builtins.elem "nvidia" config.services.xserver.videoDrivers;
 in
 {
   nix.settings = {
@@ -184,10 +187,12 @@ in
   # NVIDIA — enabled automatically when videoDrivers includes "nvidia".
 
   # Set services.xserver.videoDrivers = ["nvidia"] in hardware-configuration.nix on machines with NVIDIA GPUs.
-  hardware.nvidia = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
+  hardware.nvidia = lib.mkIf hasNvidia {
     open = true;
     modesetting.enable = true;
   };
+
+  hardware.nvidia-container-toolkit.enable = hasNvidia;
 
   services.libinput.enable = true;
   services.libinput.mouse.accelProfile = "flat";
@@ -216,17 +221,18 @@ in
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim
-    wget
-    jq
-    cudaPackages.cudatoolkit
-    sops
-    age
-    ssh-to-age
-    tinfoil-cli
-    pkgs-unstable.mistral-vibe
-  ];
+  environment.systemPackages = with pkgs;
+    [
+      vim
+      wget
+      jq
+      sops
+      age
+      ssh-to-age
+      tinfoil-cli
+      pkgs-unstable.mistral-vibe
+    ]
+    ++ lib.optional hasNvidia cudaPackages.cudatoolkit;
 
   sops = {
     defaultSopsFile = ./secrets/secrets.yaml;
@@ -251,7 +257,6 @@ in
     fi
   '';
 
-  hardware.nvidia-container-toolkit.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
