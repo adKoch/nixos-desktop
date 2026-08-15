@@ -11,6 +11,7 @@
   imports = [
     ./programs/editor.nix
     ./programs/claude-code.nix
+    ./programs/claude-desktop.nix
     ./programs/codex.nix
     ./programs/jules.nix
     ./programs/lmstudio.nix
@@ -130,10 +131,7 @@
     uv
     nixd
     nil
-  ]) ++ [
-    # FHS variant so MCP servers that shell out to node/npx work
-    inputs.claude-desktop.packages.${pkgs.stdenv.hostPlatform.system}.claude-desktop-with-fhs
-  ];
+  ]);
 
   programs.git = {
     enable = true;
