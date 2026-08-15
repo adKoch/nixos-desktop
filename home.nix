@@ -12,7 +12,6 @@
     ./programs/editor.nix
     ./programs/claude-code.nix
     ./programs/codex.nix
-    ./programs/gemini-cli.nix
     ./programs/jules.nix
     ./programs/lmstudio.nix
     ./programs/mistral-vibe.nix
@@ -128,7 +127,6 @@
     antigravity-cli
     claude-code
     codex
-    gemini-cli
     uv
     nixd
     nil
