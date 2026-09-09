@@ -10,12 +10,12 @@
   # itself on Linux, and we deliberately don't register the apt repo.
   claude-desktop = pkgs.stdenv.mkDerivation rec {
     pname = "claude-desktop";
-    version = "1.30096.1";
+    version = "1.49585.0";
 
     src = pkgs.fetchurl {
       url = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop/claude-desktop_${version}_amd64.deb";
       # Matches the SHA256 published in the repository's Packages index.
-      hash = "sha256-CeQaIKW0fqDlvCJtT/+nevQ61FDHy/XmblbW5P1K0uk=";
+      hash = "sha256-4LTOYxOUOmnpvWF0mik7/KJBtN+zf4jfZBG0tp7GekA=";
     };
 
     nativeBuildInputs = [

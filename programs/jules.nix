@@ -2,11 +2,11 @@
   home.packages = [
     (pkgs.stdenv.mkDerivation rec {
       pname = "jules";
-      version = "0.1.42";
+      version = "0.1.43";
 
       src = pkgs.fetchurl {
         url = "https://storage.googleapis.com/jules-cli/v${version}/jules_external_v${version}_linux_amd64.tar.gz";
-        hash = "sha256-c869LI+Jubsk703MuM15Q8y2npmzfeJnwvV5Mjen0QM=";
+        hash = "sha256-JDDkF+5cQZzyTeyFiru3HJTJ9LfzqPhAjhKrUfWc51k=";
       };
 
       nativeBuildInputs = [ pkgs.autoPatchelfHook ];

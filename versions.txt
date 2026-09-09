@@ -11,19 +11,28 @@
 # OpenCode — model-agnostic AI coding assistant
 # Source: https://registry.npmjs.org/opencode-linux-x64
 # Used in: programs/opencode.nix
-opencode = 1.14.48
+opencode = 1.18.30
 
 # Claude Desktop — official Linux beta, from Anthropic's apt repository
 # Source: https://downloads.claude.ai/claude-desktop/apt/stable/dists/stable/main/binary-amd64/Packages
 # Used in: programs/claude-desktop.nix
-claude-desktop = 1.30096.1
+claude-desktop = 1.49585.0
 
 # Goose Desktop — Electron desktop app for the Goose AI agent
 # Source: https://github.com/aaif-goose/goose/releases
 # Used in: programs/goose.nix
-goose-desktop = 1.45.0
+goose-desktop = 1.50.0
 
 # Jules — asynchronous coding agent from Google
 # Source: https://storage.googleapis.com/jules-cli
 # Used in: programs/jules.nix
-jules = 0.1.42
+jules = 0.1.43
+
+# Antigravity — Google's agent orchestration desktop app (Antigravity 2.0)
+# Not in nixpkgs (which carries only antigravity-ide and antigravity-cli),
+# so it comes from a third-party flake input pinned in flake.lock.
+# Bump with: nix flake update antigravity-nix
+# Source: https://github.com/jacopone/antigravity-nix/releases
+# Used in: home.nix (inputs.antigravity-nix.packages.${pkgs.system}.default)
+antigravity = 2.12.2-6298742303883264
+antigravity-nix-rev = a83437fd4c0e685f49187103afc6366929cdfbd6
