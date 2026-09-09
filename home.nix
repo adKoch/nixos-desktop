@@ -75,6 +75,8 @@
     git
     github-cli
     code-cursor
+    # Antigravity 2.0 orchestration app (not in nixpkgs; nixpkgs only has the IDE + CLI)
+    inputs.antigravity-nix.packages.${pkgs.system}.default
     alejandra
     forgejo
     podman-desktop
@@ -124,7 +126,6 @@
       ${pkgs.audiobookshelf}/bin/audiobookshelf
     '')
   ]) ++ (with pkgs-unstable; [
-    antigravity-cli
     claude-code
     codex
     uv
