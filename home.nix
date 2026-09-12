@@ -78,8 +78,8 @@
     # Antigravity 2.0 orchestration app + agy CLI. Both come from the same
     # pinned flake as nixpkgs has no app, and its CLI lags (1.1.24 vs 1.2.2);
     # sourcing both here also avoids two agy binaries competing on PATH.
-    inputs.antigravity-nix.packages.${pkgs.system}.default
-    inputs.antigravity-nix.packages.${pkgs.system}.google-antigravity-cli
+    inputs.antigravity-nix.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.antigravity-nix.packages.${pkgs.stdenv.hostPlatform.system}.google-antigravity-cli
     alejandra
     forgejo
     podman-desktop
