@@ -57,6 +57,13 @@ in
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # VPN plugins for NetworkManager. Without networkmanager-openvpn the ProtonVPN
+  # app crashes with "Support for given configuration is not implemented" when
+  # connecting over OpenVPN, because its NM backend cannot import the config.
+  networking.networkmanager.plugins = with pkgs; [
+    networkmanager-openvpn
+  ];
+
   # Set your time zone.
   time.timeZone = "Europe/Warsaw";
 
