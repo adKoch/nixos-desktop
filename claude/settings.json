@@ -11,5 +11,15 @@
   "model": "opus",
   "effortLevel": "medium",
   "tui": "fullscreen",
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "permissions": {
+    "deny": [
+      "mcp__terminal__read_terminal"
+    ]
+  },
+  "deniedMcpServers": [
+    {
+      "serverName": "terminal"
+    }
+  ]
 }
