@@ -45,6 +45,13 @@
 
     settings.stt.provider = "local";
 
+    # Hermes writes this key itself, and the module merges rather than
+    # replaces, so an app-written `true` survives every rebuild. The "wake"
+    # group is not installed (see above), and a CLI-only install would try to
+    # lazy-install openwakeword at first use -- into a read-only Nix venv.
+    # Stating it here keeps the config honest about what is actually present.
+    settings.wake_word.enabled = false;
+
     # To transcribe on tinfoil instead (whisper-large-v3-turbo in an attested
     # enclave -- better model, but the audio leaves this machine), swap the
     # line above for these three and drop "voice" from the groups:
