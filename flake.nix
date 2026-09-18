@@ -17,6 +17,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hermes-agent = {
+      url = "github:NousResearch/hermes-agent";
+    };
+
     antigravity-nix = {
       url = "github:jacopone/antigravity-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,6 +34,7 @@
     home-manager,
     firefox-addons,
     sops-nix,
+    hermes-agent,
     antigravity-nix,
   } @ inputs: {
     inherit (self) outputs;
