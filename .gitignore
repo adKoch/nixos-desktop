@@ -2,3 +2,7 @@
 *.credentials
 *.password
 .virtualcontext/result
+
+# nix build symlink -- a store path, not source
+result
+result-*
