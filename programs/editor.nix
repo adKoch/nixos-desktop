@@ -10,6 +10,11 @@
     enable = true;
     defaultEditor = true;
 
+    # 26.05 flipped these defaults to false. Every plugin below is Lua, so the
+    # Ruby and Python3 remote providers were only ever dead weight.
+    withRuby = false;
+    withPython3 = false;
+
     extraConfig = ''
       " Basic settings
       set number
@@ -73,7 +78,7 @@
       comment-nvim
     ];
 
-    extraLuaConfig = ''
+    initLua = ''
       -- Configure neo-tree
       require("neo-tree").setup({
         close_if_last_window = true,
@@ -177,7 +182,10 @@
     };
   };
 
-  programs.vscode = {
+  # programs.vscode always writes to VS Code's own paths (~/.vscode,
+  # ~/.config/Code) as of 26.05, which VSCodium never reads. programs.vscodium
+  # targets the fork's paths (~/.vscode-oss, ~/.config/VSCodium) instead.
+  programs.vscodium = {
     enable = true;
     package = pkgs-unstable.vscodium;
     profiles.default = {

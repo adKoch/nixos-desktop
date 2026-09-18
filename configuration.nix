@@ -307,18 +307,18 @@ in
     alsa-lib
     dbus
     at-spi2-core
-    xorg.libX11
-    xorg.libXcomposite
-    xorg.libXdamage
-    xorg.libXext
-    xorg.libXfixes
-    xorg.libXrandr
-    xorg.libXcursor
-    xorg.libXi
-    xorg.libXrender
-    xorg.libXtst
-    xorg.libXScrnSaver
-    xorg.libxcb
+    libx11
+    libxcomposite
+    libxdamage
+    libxext
+    libxfixes
+    libxrandr
+    libxcursor
+    libxi
+    libxrender
+    libxtst
+    libxscrnsaver
+    libxcb
     systemd
   ];
 

@@ -35,6 +35,12 @@
 
   programs.firefox = {
     enable = true;
+
+    # 26.05 moved the default to $XDG_CONFIG_HOME/mozilla/firefox. The real
+    # 1.7G profile still lives in ~/.mozilla/firefox, and Firefox itself reads
+    # from there -- letting the default move would strand every managed
+    # extension and setting in a directory the browser never looks at.
+    configPath = ".mozilla/firefox";
     profiles.default = {
       extensions = {
         packages = with firefox-addons-allowUnfree; [
@@ -68,7 +74,7 @@
     discord
     spotify
     spicetify-cli
-    protonvpn-gui
+    proton-vpn
 
     # Development
     git
@@ -144,7 +150,7 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks."*" = {
+    settings."*" = {
       addKeysToAgent = "yes";
     };
   };
