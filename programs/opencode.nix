@@ -5,11 +5,11 @@
   home.packages = [
     (pkgs.stdenv.mkDerivation rec {
       pname = "opencode";
-      version = "1.18.30";
+      version = "1.18.31";
 
       src = pkgs.fetchurl {
         url = "https://registry.npmjs.org/opencode-linux-x64/-/opencode-linux-x64-${version}.tgz";
-        hash = "sha256-qjGn5ozlxzy6MCxqTzHC4wg5jbEl5J09vqMvYYYv5t4=";
+        hash = "sha256-bYnaJSqLAw2SPnKDltw0Rlz2CVEBt4IisO4ze2gUDeo=";
       };
 
       nativeBuildInputs = [pkgs.autoPatchelfHook];
