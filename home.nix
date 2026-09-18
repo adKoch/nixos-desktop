@@ -13,7 +13,6 @@
     ./programs/claude-code.nix
     ./programs/claude-desktop.nix
     ./programs/codex.nix
-    ./programs/jules.nix
     ./programs/lmstudio.nix
     ./programs/mistral-vibe.nix
     ./programs/goose.nix
