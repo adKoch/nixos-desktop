@@ -75,6 +75,7 @@
     spotify
     spicetify-cli
     proton-vpn
+    protonmail-desktop
 
     # Development
     git
@@ -140,6 +141,21 @@
     nixd
     nil
   ]);
+
+  # Discord writes this autostart file itself, pointing Exec at the unwrapped
+  # inner binary. That bypasses the Nix wrapper, so libpulseaudio is missing
+  # from LD_LIBRARY_PATH, Chromium falls back to its ALSA backend, and mic
+  # capture fails with "microphone access denied". Own the file instead.
+  xdg.configFile."autostart/discord.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Discord
+    Exec=${config.home.profileDirectory}/bin/discord
+    Icon=discord
+    Comment=Text and voice chat for gamers.
+    Terminal=false
+    X-GNOME-Autostart-enabled=true
+  '';
 
   programs.git = {
     enable = true;

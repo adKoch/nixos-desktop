@@ -82,6 +82,17 @@ in
     LC_TIME = "pl_PL.UTF-8";
   };
 
+  # Broad Unicode font coverage. Without these the only Japanese coverage is
+  # the unifont and font-misc-misc bitmap fallbacks, so CJK text renders as
+  # boxes or coarse bitmaps; noto-fonts covers the non-CJK scripts the
+  # default set (dejavu, liberation) misses -- Cyrillic, Greek, Arabic,
+  # Hebrew, Devanagari, Thai.
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+  ];
+
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
