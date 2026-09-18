@@ -33,7 +33,11 @@
     # The "wake" group ("Hey Hermes" hotword) is deliberately absent: its
     # openwakeword dep needs tflite-runtime 2.14.0, for which uv finds no
     # compatible wheel or sdist, and the evaluation fails outright.
-    extraDependencyGroups = [ "voice" ];
+    # "mcp" carries mcp==2.0.0 + httpx2 + starlette -- the MCP SDK on its own.
+    # Without it MCP support is silently disabled, with no error anywhere.
+    # Note it is NOT reachable via "dev": that group also drags pytest, ruff,
+    # debugpy and setuptools into the venv for no benefit here.
+    extraDependencyGroups = [ "voice" "mcp" ];
 
     # The module runtime path is only bash/coreutils/git. Hermes own installer
     # provides ffmpeg, and voice-memo decoding expects it, so add it here.
@@ -47,6 +51,31 @@
     #   settings.stt.provider = "openai";
     #   environment.STT_OPENAI_BASE_URL = "http://127.0.0.1:3301/v1";
     #   environment.STT_OPENAI_MODEL = "whisper-large-v3-turbo";
+
+    # plogger over native StreamableHTTP with OAuth 2.1 PKCE -- no npx, no
+    # mcp-remote shim, no static client JSON, and no client secret (PKCE is a
+    # public-client flow). Tokens land in $HERMES_HOME/mcp-tokens/.
+    #
+    # Raw settings rather than the typed `mcpServers` option: that option has
+    # no `oauth` sub-key and no freeform passthrough, and both keys below are
+    # required here. Authelia supports neither RFC 7591 DCR nor CIMD, so the
+    # client_id must be stated; and redirect_port must be pinned because the
+    # SDK otherwise takes a fresh ephemeral port, which cannot be registered
+    # as a fixed redirect_uri. Both match the `plogger-hermes` client in
+    # personal-server (roles/authelia/templates/configuration.yml.j2).
+    #
+    # connect_timeout is raised because the first connection opens a browser
+    # for the Authelia consent screen and the 60s default expires mid-login.
+    settings.mcp_servers.plogger = {
+      url = "https://plogger.adkoch.com/mcp";
+      auth = "oauth";
+      connect_timeout = 120;
+      oauth = {
+        client_id = "plogger-hermes";
+        redirect_port = 3335;
+        scope = "openid profile email address phone offline_access groups";
+      };
+    };
 
     # Not a secret: the Caddy layer on 3301 swaps this placeholder for the
     # real key out of sops, exactly as opencode does. See programs/tinfoil.nix.
