@@ -29,6 +29,6 @@ goose-desktop = 1.51.0
 # Bump with: nix flake update antigravity-nix
 # Source: https://github.com/jacopone/antigravity-nix/releases
 # Used in: home.nix (.default = app, .google-antigravity-cli = agy)
-antigravity = 2.13.0-6362815968182272
-antigravity-cli = 1.2.2-6061403484848128
-antigravity-nix-rev = 0d6f9760ee4d685c6e75faeafb5055b93c4bc4aa
+antigravity = 2.14.0-5449404535144448
+antigravity-cli = 1.2.6-5912685477494784
+antigravity-nix-rev = b2f53370780bef2f28279e9202b41d980f28686a
