@@ -95,10 +95,12 @@
       vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 
       -- Configure LSP
-      local lspconfig = require('lspconfig')
-      lspconfig.nil_ls.setup{}
-      lspconfig.bashls.setup{}
-      lspconfig.jsonls.setup{}
+      -- require('lspconfig') is the deprecated framework: it warns with a
+      -- stack traceback on every startup and goes away in nvim-lspconfig
+      -- v3.0.0. nvim-lspconfig now ships each server as lsp/<name>.lua on
+      -- the runtimepath, which vim.lsp.enable picks up directly -- the
+      -- plugin is still required, only its Lua entry point is not.
+      vim.lsp.enable({ 'nil_ls', 'bashls', 'jsonls' })
 
       -- Configure completion
       local cmp = require'cmp'
@@ -111,14 +113,21 @@
       })
 
       -- Configure treesitter
-      require'nvim-treesitter.configs'.setup {
-        highlight = {
-          enable = true,
-        },
-        indent = {
-          enable = true,
-        },
-      }
+      -- nvim-treesitter's main-branch rewrite (shipped from 26.05) removed
+      -- require('nvim-treesitter.configs').setup{} entirely -- the module is
+      -- gone, so the old call aborted init.lua and nothing after it loaded.
+      -- Highlighting and indent are now the built-in vim.treesitter API,
+      -- started per buffer. Grammars come from withAllGrammars above, so
+      -- there is no install step to configure.
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          -- pcall: vim.treesitter.start throws for a filetype with no parser,
+          -- and an uncaught error here would break every such buffer.
+          if pcall(vim.treesitter.start, args.buf) then
+            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
 
       -- Configure gitsigns
       require('gitsigns').setup()
