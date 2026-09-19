@@ -88,4 +88,29 @@
     # real key out of sops, exactly as opencode does. See programs/tinfoil.nix.
     environment.OPENAI_API_KEY = "local";
   };
+
+  # The desktop file shipped inside the hermes-desktop package declares
+  # `Categories=Utility;`, so XFCE files it under Accessories rather than
+  # Development where goose and the other agent GUIs live. home-manager
+  # builds this entry into its own tiny package and adds it to the profile
+  # at hiPrio, so it wins the collision against the one hermes-desktop
+  # installs at the same path -- no overlay, no Electron rebuild.
+  #
+  # Exec/Icon are deliberately unqualified rather than store paths: the
+  # binary is on the session PATH and the icon is installed into the hicolor
+  # theme, so neither needs re-pinning when the package version moves.
+  xdg.desktopEntries.hermes = {
+    name = "Hermes";
+    genericName = "Hermes Desktop";
+    comment = "Launch Hermes Desktop";
+    exec = "hermes-desktop";
+    icon = "hermes";
+    terminal = false;
+    type = "Application";
+    categories = [ "Development" ];
+    startupNotify = true;
+    # Not a first-class option; it is what lets the window manager match the
+    # running Electron window back to this launcher.
+    settings.StartupWMClass = "Hermes";
+  };
 }
