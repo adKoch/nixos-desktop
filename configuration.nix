@@ -223,6 +223,18 @@ in
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "adam";
 
+  # 26.05's XFCE module turns gnome-keyring back on and wires pam_gnome_keyring
+  # into the login stack, but lightdm-autologin authenticates with pam_permit, so
+  # the daemon never receives a password and can only ever offer a blank-password
+  # keyring. Those are stored in the textual GKeyFile format, which does not
+  # escape newlines -- Proton VPN's session blob embeds a PEM certificate, so the
+  # first write corrupts the file ("keyring was in an invalid or unrecognized
+  # format"), the keyring is discarded on the next start and the VPN session goes
+  # with it, roughly every certificate refresh. Nothing here needs a secret
+  # service: claude-desktop passes --password-store=basic, goose and nvim disable
+  # keyring, and Proton VPN falls back to its own store under ~/.config/Proton.
+  services.gnome.gnome-keyring.enable = lib.mkForce false;
+
   # Security configuration
   security.sudo.wheelNeedsPassword = false;
 
