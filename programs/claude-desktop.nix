@@ -10,12 +10,12 @@
   # itself on Linux, and we deliberately don't register the apt repo.
   claude-desktop = pkgs.stdenv.mkDerivation rec {
     pname = "claude-desktop";
-    version = "2.2553.1";
+    version = "5.11492.2";
 
     src = pkgs.fetchurl {
       url = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop/claude-desktop_${version}_amd64.deb";
       # Matches the SHA256 published in the repository's Packages index.
-      hash = "sha256-ZwD92E53prjJORLC9p610eQPqZvNnTf0OPgJ7ypv5vg=";
+      hash = "sha256-0QlE+lZjuZdADPZsXHc4/WrPZU+KrqyluZTrFHqms18=";
     };
 
     nativeBuildInputs = [
@@ -48,6 +48,7 @@
       nspr
       nss
       pango
+      pipewire # claude-native-binding.node (since 2.37337)
       systemd
       libx11
       libxcomposite
@@ -104,6 +105,52 @@
       mainProgram = "claude-desktop";
     };
   };
+  # Since the app can't update itself here, poll the apt index and raise a
+  # desktop notification when a release newer than the pinned one appears.
+  # The last announced version is remembered so each release notifies once.
+  checkUpdate = pkgs.writeShellApplication {
+    name = "claude-desktop-check-update";
+    runtimeInputs = with pkgs; [ curl gawk coreutils libnotify ];
+    text = ''
+      index="https://downloads.claude.ai/claude-desktop/apt/stable/dists/stable/main/binary-amd64/Packages"
+      pinned="${claude-desktop.version}"
+      state="''${XDG_STATE_HOME:-$HOME/.local/state}/claude-desktop-last-notified"
+
+      latest=$(curl -fsSL "$index" \
+        | awk '/^Package: claude-desktop$/{p=1} p&&/^Version:/{print $2} /^$/{p=0}' \
+        | sort -V | tail -1)
+      [ -n "$latest" ] || { echo "could not read $index" >&2; exit 1; }
+
+      echo "pinned $pinned, latest $latest"
+      [ "$latest" != "$pinned" ] || exit 0
+      [ "$(printf '%s\n%s\n' "$pinned" "$latest" | sort -V | tail -1)" = "$latest" ] || exit 0
+      [ "$(cat "$state" 2>/dev/null)" != "$latest" ] || exit 0
+
+      notify-send -a "Claude Desktop" -i claude-desktop -u normal \
+        "Claude Desktop $latest available" \
+        "Pinned: $pinned. Bump programs/claude-desktop.nix and versions.txt."
+      mkdir -p "$(dirname "$state")"
+      echo "$latest" > "$state"
+    '';
+  };
 in {
-  home.packages = [ claude-desktop ];
+  home.packages = [ claude-desktop checkUpdate ];
+
+  systemd.user.services.claude-desktop-check-update = {
+    Unit.Description = "Check for a newer Claude Desktop release";
+    Service = {
+      Type = "oneshot";
+      ExecStart = lib.getExe checkUpdate;
+    };
+  };
+
+  systemd.user.timers.claude-desktop-check-update = {
+    Unit.Description = "Periodically check for a newer Claude Desktop release";
+    Timer = {
+      OnStartupSec = "5min";
+      OnUnitActiveSec = "3h";
+      Persistent = true;
+    };
+    Install.WantedBy = [ "timers.target" ];
+  };
 }
