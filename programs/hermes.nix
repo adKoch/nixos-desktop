@@ -16,12 +16,12 @@
     enable = true;
     gateway.enable = false;
 
-    # GLM 5.3 Flash over gemma4-31b: 320B MoE with only 18B active, so it runs
-    # at small-model speed, and it is tuned for agentic tool-calling, which is
-    # most of what Hermes does. Both are served by the same tinfoil proxy.
+    # DeepSeek V4.1 Flash over gemma4-31b: a fast MoE tuned for agentic
+    # tool-calling, which is most of what Hermes does. It replaces GLM 5.3
+    # Flash, which tinfoil is deprecating. Both are served by the same proxy.
     settings.model = {
       provider = "openai-api";
-      default = "glm-5-3-flash";
+      default = "deepseek-v4-1-flash";
       base_url = "http://127.0.0.1:3301/v1";
     };
 
