@@ -9,19 +9,24 @@
 # Each entry includes the source URL so you know where to look for updates.
 
 # OpenCode — model-agnostic AI coding assistant
-# Source: https://registry.npmjs.org/opencode-linux-x64
+# Source: https://registry.npmjs.org/@opencode/cli-linux-x64 (v2; 1.x was opencode-linux-x64)
 # Used in: programs/opencode.nix
-opencode = 1.18.31
+opencode = 2.3.0
+
+# Herdr — persistent terminal runtime for coding agents (static binary)
+# Source: https://herdr.dev/latest.json (binaries on https://github.com/herdrdev/herdr/releases)
+# Used in: programs/herdr.nix
+herdr = 0.9.5
 
 # Claude Desktop — official Linux beta, from Anthropic's apt repository
 # Source: https://downloads.claude.ai/claude-desktop/apt/stable/dists/stable/main/binary-amd64/Packages
 # Used in: programs/claude-desktop.nix
-claude-desktop = 2.2553.1
+claude-desktop = 5.11492.2
 
 # Goose Desktop — Electron desktop app for the Goose AI agent
 # Source: https://github.com/aaif-goose/goose/releases
 # Used in: programs/goose.nix
-goose-desktop = 1.51.0
+goose-desktop = 1.59.0
 
 # Antigravity — Google's agent orchestration desktop app (Antigravity 2.0)
 # Not in nixpkgs (which carries only antigravity-ide and antigravity-cli),
@@ -29,6 +34,18 @@ goose-desktop = 1.51.0
 # Bump with: nix flake update antigravity-nix
 # Source: https://github.com/jacopone/antigravity-nix/releases
 # Used in: home.nix (.default = app, .google-antigravity-cli = agy)
-antigravity = 2.14.0-5449404535144448
-antigravity-cli = 1.2.6-5912685477494784
-antigravity-nix-rev = b2f53370780bef2f28279e9202b41d980f28686a
+antigravity = 2.31.2-6470801290035200
+antigravity-cli = 1.5.8-4602374149505024
+antigravity-nix-rev = 77adc9319f8ab687aa1295e2285dde6bf46f0b07
+
+# ChatGPT Desktop — official Linux preview of the ChatGPT app, which is also
+# the Codex desktop app; from OpenAI's apt repository
+# Source: https://persistent.oaistatic.com/codex-app-prod/linux/deb/dists/stable/main/binary-amd64/Packages
+# Used in: programs/chatgpt-desktop.nix
+chatgpt-desktop = 26.1111.21308
+
+# ZCode — Z.ai's coding agent desktop app (official Linux build)
+# Latest version: https://github.com/zai-org/ZCode/releases (tags; Linux
+# assets aren't attached there). Download + hashes: https://cdn-zcode.z.ai/zcode/electron/releases/<version>/linux-x64/latest.yml
+# Used in: programs/zcode.nix
+zcode = 3.17.2

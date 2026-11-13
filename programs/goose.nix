@@ -27,11 +27,11 @@
 
   goose-desktop = pkgs.stdenv.mkDerivation rec {
     pname = "goose-desktop";
-    version = "1.51.0";
+    version = "1.59.0";
 
     src = pkgs.fetchurl {
       url = "https://github.com/aaif-goose/goose/releases/download/v${version}/goose_${version}_amd64.deb";
-      hash = "sha256-rkdl/Elk5bAAS0HJ/4W5+HAKiGL0XuhF7qDq58TGaTQ=";
+      hash = "sha256-iZKywNfCDg7UMoFy75XE/WMXTenddeci+6Hc/vnuelg=";
     };
 
     nativeBuildInputs = [
@@ -123,6 +123,10 @@ in {
       {
         name = "gemma4-31b";
         context_limit = 256000;
+      }
+      {
+        name = "deepseek-v4-1-flash";
+        context_limit = 1048576;
       }
     ];
   };

@@ -6,3 +6,7 @@
 # nix build symlink -- a store path, not source
 result
 result-*
+
+# Claude syncs account skills into ~/.claude/skills, which programs/claude-code.nix
+# links here -- app-managed cache keyed by account id, not configuration.
+claude/skills/synced/
