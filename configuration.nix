@@ -37,6 +37,9 @@ in
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
+  # /boot is only 196M and each distinct kernel+initrd takes ~40M there; the
+  # new one is copied before old entries are pruned, so keep at most 3.
+  boot.loader.systemd-boot.configurationLimit = 3;
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "desktop"; # Define your hostname.
