@@ -79,6 +79,15 @@
             (final: prev: {
               mistral-vibe = prev.mistral-vibe.overridePythonAttrs (old: {
                 doCheck = false;
+                # rustPlatform.cargoSetupHook now exports AWS_LC_SYS_USE_SYSTEM=1
+                # (nixpkgs 44cddf92), but vibe-rs doesn't list aws-lc, so
+                # aws-lc-sys panics instead of building its vendored copy.
+                # Drop once nixpkgs adds it upstream, as it has for codex.
+                passthru = old.passthru // {
+                  vibe-rs = old.passthru.vibe-rs.overrideAttrs (o: {
+                    buildInputs = (o.buildInputs or [ ]) ++ [ final.aws-lc ];
+                  });
+                };
               });
             })
           ];
