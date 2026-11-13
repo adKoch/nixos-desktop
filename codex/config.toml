@@ -1,6 +1,3 @@
-# Codex CLI configuration
-# Reference: https://developers.openai.com/codex/config-reference
-
 model = "gpt-5.5"
 model_reasoning_effort = "high"
 approvals_reviewer = "user"
@@ -19,3 +16,65 @@ trust_level = "trusted"
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
+
+[features]
+hooks = true
+
+[desktop]
+followUpQueueMode = "steer"
+external-agent-import-sync-item-types = "all"
+external-agent-import-sync-enabled = true
+conversationDetailMode = "STEPS_COMMANDS"
+ambient-suggestions-enabled = true
+appearanceTheme = "dark"
+
+[marketplaces.openai-primary-runtime]
+source_type = "local"
+source = "/home/adam/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
+enabled = true
+
+[mcp_servers.node_repl]
+args = []
+command = "/nix/store/mbm7nsscg64xjra0m49v95gldb3ff773-chatgpt-desktop-26.1027.51404/lib/chatgpt/resources/cua_node/bin/node_repl"
+env_vars = ["BROWSER_USE_ACCESS_EXECUTOR_ID", "BROWSER_USE_ACCESS_PIPE_PATH", "BROWSER_USE_ACCESS_VERIFYING_IDENTITY"]
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/nix/store/mbm7nsscg64xjra0m49v95gldb3ff773-chatgpt-desktop-26.1027.51404/lib/chatgpt/resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/nix/store/mbm7nsscg64xjra0m49v95gldb3ff773-chatgpt-desktop-26.1027.51404/lib/chatgpt/resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/home/adam/.codex:/nix/store/mbm7nsscg64xjra0m49v95gldb3ff773-chatgpt-desktop-26.1027.51404/lib/chatgpt/resources/cua_node/lib/node_modules"
+CODEX_HOME = "/home/adam/.codex"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab,mcpapps"
+BROWSER_USE_TINYSKY_ENABLED = "1"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.1027.51404"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/home/adam/.codex/plugins/cache/openai-bundled/browser/26.1027.51404/scripts/browser-service.mjs"}'
+CODEX_CLI_PATH = "/nix/store/mbm7nsscg64xjra0m49v95gldb3ff773-chatgpt-desktop-26.1027.51404/lib/chatgpt/resources/codex"
+
+[mcp_servers.cua_repl]
+command = "/nix/store/mbm7nsscg64xjra0m49v95gldb3ff773-chatgpt-desktop-26.1027.51404/lib/chatgpt/ChatGPT"
+enabled = false
+
+[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+CLAUDE_CODE_SUBAGENT_MODEL = "sonnet"
+BASH_MAX_OUTPUT_LENGTH = "100000"
