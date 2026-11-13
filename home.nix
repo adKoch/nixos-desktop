@@ -12,11 +12,14 @@
     ./programs/editor.nix
     ./programs/claude-code.nix
     ./programs/claude-desktop.nix
+    ./programs/chatgpt-desktop.nix
+    ./programs/zcode.nix
     ./programs/codex.nix
     ./programs/lmstudio.nix
     ./programs/mistral-vibe.nix
     ./programs/goose.nix
     ./programs/hermes.nix
+    ./programs/herdr.nix
     ./programs/opencode.nix
     ./programs/tinfoil.nix
     ./programs/terminal.nix
@@ -89,7 +92,6 @@
     inputs.antigravity-nix.packages.${pkgs.stdenv.hostPlatform.system}.google-antigravity-cli
     alejandra
     forgejo
-    podman-desktop
     podman-compose
     gcc
     gnumake
@@ -121,7 +123,6 @@
     # Utilities
     blueman
     appimage-run
-    anki
     sox
 
     (pkgs.writeShellScriptBin "start-audiobookshelf" ''
